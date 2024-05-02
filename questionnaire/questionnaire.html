@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionnaire interactif avec chronomètre et barre de progression</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f3f3f3;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            display: none; /* Par défaut, cache toutes les questions */
+        }
+        .question.active {
+            display: block; /* Affiche la question active */
+            animation: fadeIn 0.5s ease-in-out; /* Animation d'apparition */
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        .question label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .question input[type="radio"] {
+            margin-right: 10px;
+        }
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+        .timer {
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+        .progress-bar {
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .progress {
+            width: 0;
+            height: 20px;
+            background-color: #007bff;
+            border-radius: 5px;
+            transition: width 0.3s ease-in-out;
+        }
+        .countdown {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="timer" id="timer">02:00</div>
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        <div class="countdown" id="countdown"></div>
+        <form id="questionnaireForm">
+            <div class="question active">
+                <label for="q1">1. Quelle est la capitale de la France ?</label>
+                <input type="radio" id="q1" name="q1" value="paris" required><label for="q1">Paris</label>
+                <input type="radio" id="q1" name="q1" value="londres"><label for="q1">Londres</label>
+                <input type="radio" id="q1" name="q1" value="berlin"><label for="q1">Berlin</label>
+            </div>
+            <div class="question">
+                <label for="q2">2. Quelle est la capitale du Japon ?</label>
+                <input type="radio" id="q2" name="q2" value="tokyo" required><label for="q2">Tokyo</label>
+                <input type="radio" id="q2" name="q2" value="pekin"><label for="q2">Pékin</label>
+                <input type="radio" id="q2" name="q2" value="seoul"><label for="q2">Séoul</label>
+            </div>
+            <div class="question">
+                <label for="q3">3. Quel est le plus grand océan du monde ?</label>
+                <input type="radio" id="q3" name="q3" value="pacific" required><label for="q3">Pacifique</label>
+                <input type="radio" id="q3" name="q3" value="atlantique"><label for="q3">Atlantique</label>
+                <input type="radio" id="q3" name="q3" value="indien"><label for="q3">Indien</label>
+            </div>
+            <div class="question">
+                <label for="q4">4. Combien de continents y a-t-il dans le monde ?</label>
+                <input type="radio" id="q4" name="q4" value="5" required><label for="q4">5</label>
+                <input type="radio" id="q4" name="q4" value="6"><label for="q4">6</label>
+                <input type="radio" id="q4" name="q4" value="7"><label for="q4">7</label>
+            </div>
+            <div class="question">
+                <label for="q5">5. Quel est le symbole chimique de l'or ?</label>
+                <input type="radio" id="q5" name="q5" value="au" required><label for="q5">Au</label>
+                <input type="radio" id="q5" name="q5" value="ag"><label for="q5">Ag</label>
+                <input type="radio" id="q5" name="q5" value="cu"><label for="q5">Cu</label>
+            </div>
+            <div class="question">
+                <label for="q6">6. Qui a écrit "Le Petit Prince" ?</label>
+                <input type="radio" id="q6" name="q6" value="antoine" required><label for="q6">Antoine de Saint-Exupéry</label>
+                <input type="radio" id="q6" name="q6" value="voltaire"><label for="q6">Voltaire</label>
+                <input type="radio" id="q6" name="q6" value="hugo"><label for="q6">Victor Hugo</label>
+            </div>
+            <div class="question">
+                <label for="q7">7. Quelle est la couleur du cheval blanc d'Henri IV ?</label>
+                <input type="radio" id="q7" name="q7" value="blanc" required><label for="q7">Blanc</label>
+                <input type="radio" id="q7" name="q7" value="noir"><label for="q7">Noir</label>
+                <input type="radio" id="q7" name="q7" value="rouge"><label for="q7">Rouge</label>
+            </div>
+            <div class="question">
+                <label for="q8">8. Quel est le plus grand désert du monde ?</label>
+                <input type="radio" id="q8" name="q8" value="sahara" required><label for="q8">Sahara</label>
+                <input type="radio" id="q8" name="q8" value="gobi"><label for="q8">Gobi</label>
+                <input type="radio" id="q8" name="q8" value="kalahari"><label for="q8">Kalahari</label>
+            </div>
+            <div class="question">
+                <label for="q9">9. Quelle est la planète la plus proche du Soleil ?</label>
+                <input type="radio" id="q9" name="q9" value="mercure" required><label for="q9">Mercure</label>
+                <input type="radio" id="q9" name="q9" value="venus"><label for="q9">Vénus</label>
+                <input type="radio" id="q9" name="q9" value="mars"><label for="q9">Mars</label>
+            </div>
+            <div class="question">
+                <label for="q10">10. Qui a peint la Joconde ?</label>
+                <input type="radio" id="q10" name="q10" value="leonard" required><label for="q10">Leonardo da Vinci</label>
+                <input type="radio" id="q10" name="q10" value="michelangelo"><label for="q10">Michelangelo</label>
+                <input type="radio" id="q10" name="q10" value="raphael"><label for="q10">Raphael</label>
+            </div>
+            <button type="submit" class="submit-btn">Vérifier les réponses</button>
+        </form>
+    </div>
+
+    <script>
+        // Fonction pour afficher le chronomètre
+        function startTimer(duration, display) {
+            let timer = duration, minutes, seconds;
+            let interval = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(interval); // Arrête le chronomètre
+                    timer = duration;
+                    alert("Le temps est écoulé !");
+                    // Passe à la question suivante
+                    let currentQuestion = document.querySelector('div.question.active');
+                    let nextQuestion = currentQuestion.nextElementSibling;
+                    if (nextQuestion) {
+                        currentQuestion.classList.remove('active');
+                        nextQuestion.classList.add('active');
+                    }
+                }
+            }, 1000);
+        }
+
+        // Démarre le chronomètre lors du chargement de la page
+        window.onload = function () {
+            let twoMinutes = 2 * 60,
+                display = document.querySelector('#timer'),
+                countdown = document.querySelector('#countdown');
+            startTimer(twoMinutes, display);
+            displayCountdown(twoMinutes, countdown);
+        };
+
+        // Afficher le compte à rebours
+        function displayCountdown(duration, display) {
+            let timer = duration, minutes, seconds;
+            setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = "Temps restant : " + minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    timer = duration;
+                }
+            }, 1000);
+        }
+
+        // Gestionnaire d'événements pour le formulaire
+        document.getElementById('questionnaireForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Empêche l'envoi du formulaire
+            let score = 0;
+            // Tableau des bonnes réponses
+            const correctAnswers = ["paris", "tokyo", "pacific", "5", "au", "antoine", "blanc", "sahara", "mercure", "leonard"];
+            // Boucle sur les réponses fournies par l'utilisateur
+            for (let i = 1; i <= 10; i++) {
+                const userAnswer = document.querySelector('input[name="q'+i+'"]:checked');
+                if (userAnswer) {
+                    if (userAnswer.value === correctAnswers[i-1]) {
+                        score++;
+                    }
+                }
+            }
+            alert("Vous avez obtenu " + score + " bonnes réponses sur 10.");
+        });
+    </script>
+</body>
+</html>
